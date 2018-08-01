@@ -5,8 +5,12 @@
  */
 package auditoria;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,45 +19,71 @@ import javax.swing.table.DefaultTableModel;
  */
 public class anomaliasDatos extends javax.swing.JFrame {
 
-    
     static ResultSet res;
+
     /**
      * Creates new form anomaliasDatos
      */
     public anomaliasDatos() {
         initComponents();
     }
-    
-    public void cargarTabla(String query){
-    
+
+    public void cargarTabla(String query) {
+
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
-        
+
         res = coneccionBDD.baseDatos.consulta(query);
-        
+
         try {
-            
-            while(res.next()){
-            
+
+            while (res.next()) {
+
                 Vector v = new Vector();
-                
+
                 v.add(res.getInt(1));
                 v.add(res.getString(2));
                 v.add(res.getString(3));
-                
+
                 modelo.addRow(v);
-                
+
                 jTable1.getColumnModel().getColumn(0).setPreferredWidth(001);
                 jTable1.getColumnModel().getColumn(1).setPreferredWidth(120);
                 jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
-                
+
                 jTable1.setModel(modelo);
-                
+
             }
-            
+
         } catch (Exception e) {
         }
-        
+
+    }
+
+    public void generarReporte() throws Exception {
+        BufferedWriter bfw = new BufferedWriter(new FileWriter("Data.txt"));
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            if(i == 2){
+            bfw.write("\t\t\t\t\t\t\t\t\t\t\t\t");
+            }
+            bfw.write(jTable1.getColumnName(i));
+            bfw.write("\t");
+        }
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            bfw.newLine();
+            for (int j = 0; j < jTable1.getColumnCount(); j++) {
+                
+                if(j == 2){
+            bfw.write("\t\t\t\t\t\t");
+            }
+
+                
+                bfw.write((jTable1.getValueAt(i, j)).toString());
+                bfw.write("\t");
+            }
+        }
+        bfw.close();
     }
 
     /**
@@ -85,6 +115,11 @@ public class anomaliasDatos extends javax.swing.JFrame {
         });
 
         jButton2.setText("Generar Reporte");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,85 +204,84 @@ public class anomaliasDatos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        String queryCrearTabla = "DROP TABLE IF EXISTS [dbo].[dbcc_history]\n" +
-"\n" +
-"CREATE TABLE [dbo].[dbcc_history](\n" +
-"[Error] [int] NULL,\n" +
-"[Level] [int] NULL,\n" +
-"[State] [int] NULL,\n" +
-"[MessageText] [varchar](7000) NULL,\n" +
-"[RepairLevel] [int] NULL,\n" +
-"[Status] [int] NULL,\n" +
-"[DbId] [int] NULL,\n" +
-"[DbFragId] [int] NULL,\n" +
-"[ObjectId] [int] NULL,\n" +
-"[IndexId] [int] NULL,\n" +
-"[PartitionID] [int] NULL,\n" +
-"[AllocUnitID] [int] NULL,\n" +
-"[RidDbId] [int] NULL,\n" +
-"[RidPruId] [int] NULL,\n" +
-"[File] [int] NULL,\n" +
-"[Page] [int] NULL,\n" +
-"[Slot] [int] NULL,\n" +
-"[RefDbId] [int] NULL,\n" +
-"[RefPruId] [int] NULL,\n" +
-"[RefFile] [int] NULL,\n" +
-"[RefPage] [int] NULL,\n" +
-"[RefSlot] [int] NULL,\n" +
-"[Allocation] [int] NULL,\n" +
-"[TimeStamp] [datetime] NULL CONSTRAINT [DF_dbcc_history_TimeStamp] DEFAULT (GETDATE())\n" +
-") ON [PRIMARY]\n";
-        
+        String queryCrearTabla = "DROP TABLE IF EXISTS [dbo].[dbcc_history]\n"
+                + "\n"
+                + "CREATE TABLE [dbo].[dbcc_history](\n"
+                + "[Error] [int] NULL,\n"
+                + "[Level] [int] NULL,\n"
+                + "[State] [int] NULL,\n"
+                + "[MessageText] [varchar](7000) NULL,\n"
+                + "[RepairLevel] [int] NULL,\n"
+                + "[Status] [int] NULL,\n"
+                + "[DbId] [int] NULL,\n"
+                + "[DbFragId] [int] NULL,\n"
+                + "[ObjectId] [int] NULL,\n"
+                + "[IndexId] [int] NULL,\n"
+                + "[PartitionID] [int] NULL,\n"
+                + "[AllocUnitID] [int] NULL,\n"
+                + "[RidDbId] [int] NULL,\n"
+                + "[RidPruId] [int] NULL,\n"
+                + "[File] [int] NULL,\n"
+                + "[Page] [int] NULL,\n"
+                + "[Slot] [int] NULL,\n"
+                + "[RefDbId] [int] NULL,\n"
+                + "[RefPruId] [int] NULL,\n"
+                + "[RefFile] [int] NULL,\n"
+                + "[RefPage] [int] NULL,\n"
+                + "[RefSlot] [int] NULL,\n"
+                + "[Allocation] [int] NULL,\n"
+                + "[TimeStamp] [datetime] NULL CONSTRAINT [DF_dbcc_history_TimeStamp] DEFAULT (GETDATE())\n"
+                + ") ON [PRIMARY]\n";
+
         String queryDropExists = "drop proc if exists [dbo].[usp_CheckDBIntegrity]";
-        
-        String queryCrearProc = "CREATE PROC [dbo].[usp_CheckDBIntegrity]\n" +
-"@database_name SYSNAME=NULL\n" +
-"AS\n" +
-"IF @database_name IS NULL -- Run against all databases\n" +
-"BEGIN\n" +
-"   DECLARE database_cursor CURSOR FOR\n" +
-"   SELECT name \n" +
-"   FROM sys.databases db\n" +
-"   WHERE name NOT IN ('master','model','msdb','tempdb') \n" +
-"   AND db.state_desc = 'ONLINE'\n" +
-"   AND source_database_id IS NULL -- REAL DBS ONLY (Not Snapshots)\n" +
-"   AND is_read_only = 0\n" +
-"\n" +
-"   OPEN database_cursor\n" +
-"   FETCH next FROM database_cursor INTO @database_name\n" +
-"   WHILE @@FETCH_STATUS=0\n" +
-"   BEGIN\n" +
-"\n" +
-"      INSERT INTO dbcc_history ([Error], [Level], [State], MessageText, RepairLevel, [Status], \n" +
-"      [DbId], DbFragId, ObjectId, IndexId, PartitionId, AllocUnitId, RidDbId, RidPruId, [File], Page, Slot, \n" +
-"      RefDbId, RefPruId, RefFile, RefPage, RefSlot,Allocation)\n" +
-"      EXEC ('dbcc checkdb(''' + @database_name + ''') with tableresults')\n" +
-"\n" +
-"      FETCH next FROM database_cursor INTO @database_name\n" +
-"   END\n" +
-"\n" +
-"   CLOSE database_cursor\n" +
-"   DEALLOCATE database_cursor\n" +
-"END \n" +
-"\n" +
-"ELSE -- run against a specified database (ie: usp_CheckDBIntegrity 'DB Name Here'\n" +
-"\n" +
-"   INSERT INTO dbcc_history ([Error], [Level], [State], MessageText, RepairLevel, [Status], \n" +
-"   [DbId], DbFragId, ObjectId, IndexId, PartitionId, AllocUnitId, RidDbId, RidPruId, [File], Page, Slot, \n" +
-"   RefDbId, RefPruId, RefFile, RefPage, RefSlot,Allocation)\n" +
-"   EXEC ('dbcc checkdb(''' + @database_name + ''') with tableresults')";
-        
-        
+
+        String queryCrearProc = "CREATE PROC [dbo].[usp_CheckDBIntegrity]\n"
+                + "@database_name SYSNAME=NULL\n"
+                + "AS\n"
+                + "IF @database_name IS NULL -- Run against all databases\n"
+                + "BEGIN\n"
+                + "   DECLARE database_cursor CURSOR FOR\n"
+                + "   SELECT name \n"
+                + "   FROM sys.databases db\n"
+                + "   WHERE name NOT IN ('master','model','msdb','tempdb') \n"
+                + "   AND db.state_desc = 'ONLINE'\n"
+                + "   AND source_database_id IS NULL -- REAL DBS ONLY (Not Snapshots)\n"
+                + "   AND is_read_only = 0\n"
+                + "\n"
+                + "   OPEN database_cursor\n"
+                + "   FETCH next FROM database_cursor INTO @database_name\n"
+                + "   WHILE @@FETCH_STATUS=0\n"
+                + "   BEGIN\n"
+                + "\n"
+                + "      INSERT INTO dbcc_history ([Error], [Level], [State], MessageText, RepairLevel, [Status], \n"
+                + "      [DbId], DbFragId, ObjectId, IndexId, PartitionId, AllocUnitId, RidDbId, RidPruId, [File], Page, Slot, \n"
+                + "      RefDbId, RefPruId, RefFile, RefPage, RefSlot,Allocation)\n"
+                + "      EXEC ('dbcc checkdb(''' + @database_name + ''') with tableresults')\n"
+                + "\n"
+                + "      FETCH next FROM database_cursor INTO @database_name\n"
+                + "   END\n"
+                + "\n"
+                + "   CLOSE database_cursor\n"
+                + "   DEALLOCATE database_cursor\n"
+                + "END \n"
+                + "\n"
+                + "ELSE -- run against a specified database (ie: usp_CheckDBIntegrity 'DB Name Here'\n"
+                + "\n"
+                + "   INSERT INTO dbcc_history ([Error], [Level], [State], MessageText, RepairLevel, [Status], \n"
+                + "   [DbId], DbFragId, ObjectId, IndexId, PartitionId, AllocUnitId, RidDbId, RidPruId, [File], Page, Slot, \n"
+                + "   RefDbId, RefPruId, RefFile, RefPage, RefSlot,Allocation)\n"
+                + "   EXEC ('dbcc checkdb(''' + @database_name + ''') with tableresults')";
+
         String queryEjecutarProc = "EXEC usp_CheckDBIntegrity 'pubs' -- specifies particular database, otherwise ALL DBS\n";
-        
-        String queryConsultarResultados = "/****** Script for SelectTopNRows command from SSMS  ******/\n" +
-"SELECT TOP (1000) [Error]\n" +
-"      ,[MessageText]\n" +
-"      ,[TimeStamp]\n" +
-"  FROM [pubs].[dbo].[dbcc_history]";
+
+        String queryConsultarResultados = "/****** Script for SelectTopNRows command from SSMS  ******/\n"
+                + "SELECT TOP (1000) [Error]\n"
+                + "      ,[MessageText]\n"
+                + "      ,[TimeStamp]\n"
+                + "  FROM [pubs].[dbo].[dbcc_history]";
 
         res = coneccionBDD.baseDatos.consulta(queryCrearTabla);
-        res = coneccionBDD.baseDatos.consulta(queryDropExists);        
+        res = coneccionBDD.baseDatos.consulta(queryDropExists);
         res = coneccionBDD.baseDatos.consulta(queryCrearProc);
         res = coneccionBDD.baseDatos.consulta(queryEjecutarProc);
 
@@ -256,12 +290,22 @@ public class anomaliasDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+
         this.dispose();
         main main = new main();
         main.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        try {
+            generarReporte();
+        } catch (Exception ex) {
+            Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
