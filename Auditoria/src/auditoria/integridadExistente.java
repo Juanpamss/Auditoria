@@ -6,7 +6,13 @@
 package auditoria;
 
 import static auditoria.anomaliasDatos.res;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -53,6 +59,31 @@ public class integridadExistente extends javax.swing.JFrame {
         }
 
     }
+    
+    public void generarReporte(String destino) throws Exception {
+        BufferedWriter bfw = new BufferedWriter(new FileWriter(destino + ".txt"));
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            if (i == 2) {
+                bfw.write("\t\t\t\t\t\t\t\t\t\t\t\t");
+            }
+            bfw.write(jTable1.getColumnName(i));
+            bfw.write("\t");
+        }
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            bfw.newLine();
+            for (int j = 0; j < jTable1.getColumnCount(); j++) {
+
+                if (j == 2) {
+                    bfw.write("\t\t\t\t\t\t");
+                }
+
+                bfw.write((jTable1.getValueAt(i, j)).toString());
+                bfw.write("\t");
+            }
+        }
+        bfw.close();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,6 +98,7 @@ public class integridadExistente extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -114,9 +146,16 @@ public class integridadExistente extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jButton2.setText("Generar Reporte");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Archivo");
 
@@ -144,6 +183,10 @@ public class integridadExistente extends javax.swing.JFrame {
                         .addGap(13, 13, 13)
                         .addComponent(jButton1)))
                 .addContainerGap(22, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,7 +195,9 @@ public class integridadExistente extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -179,6 +224,26 @@ public class integridadExistente extends javax.swing.JFrame {
         cargarTabla(query);
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        JFileChooser escoger = new JFileChooser();
+        
+        escoger.setApproveButtonText("Guardar");
+        
+        escoger.showOpenDialog(null);
+        
+        File f = escoger.getSelectedFile();
+        
+        String nombreAchivo = f.getAbsolutePath();
+        
+        try {
+            generarReporte(nombreAchivo);
+        } catch (Exception ex) {
+            Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -217,6 +282,7 @@ public class integridadExistente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;

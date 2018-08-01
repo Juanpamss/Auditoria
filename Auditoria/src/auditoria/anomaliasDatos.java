@@ -6,6 +6,7 @@
 package auditoria;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -62,8 +64,8 @@ public class anomaliasDatos extends javax.swing.JFrame {
 
     }
 
-    public void generarReporte() throws Exception {
-        BufferedWriter bfw = new BufferedWriter(new FileWriter("Data.txt"));
+    public void generarReporte(String destino) throws Exception {
+        BufferedWriter bfw = new BufferedWriter(new FileWriter(destino + ".txt"));
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
             if (i == 2) {
                 bfw.write("\t\t\t\t\t\t\t\t\t\t\t\t");
@@ -296,8 +298,18 @@ public class anomaliasDatos extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
+        JFileChooser escoger = new JFileChooser();
+        
+        escoger.setApproveButtonText("Guardar");
+        
+        escoger.showOpenDialog(null);
+        
+        File f = escoger.getSelectedFile();
+        
+        String nombreAchivo = f.getAbsolutePath();
+        
         try {
-            generarReporte();
+            generarReporte(nombreAchivo);
         } catch (Exception ex) {
             Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
         }

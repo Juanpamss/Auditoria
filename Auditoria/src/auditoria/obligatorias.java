@@ -6,6 +6,9 @@
 package auditoria;
 
 import static auditoria.anomaliasDatos.res;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
@@ -13,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -177,6 +183,31 @@ public class obligatorias extends javax.swing.JFrame {
 
         jTable1.setModel(modelo);
     }
+    
+    public void generarReporte(String destino) throws Exception {
+        BufferedWriter bfw = new BufferedWriter(new FileWriter(destino + ".txt"));
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            if (i == 2) {
+                bfw.write("\t\t\t\t\t\t\t\t\t\t\t\t");
+            }
+            bfw.write(jTable1.getColumnName(i));
+            bfw.write("\t");
+        }
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            bfw.newLine();
+            for (int j = 0; j < jTable1.getColumnCount(); j++) {
+
+                if (j == 2) {
+                    bfw.write("\t\t\t\t\t\t");
+                }
+
+                bfw.write((jTable1.getValueAt(i, j)).toString());
+                bfw.write("\t");
+            }
+        }
+        bfw.close();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -192,6 +223,7 @@ public class obligatorias extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -237,6 +269,13 @@ public class obligatorias extends javax.swing.JFrame {
 
         jLabel1.setText("Debería existir una relación de integridad entre:");
 
+        jButton2.setText("Generar Reporte");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Acciones");
 
         jMenuItem1.setText("Inicio");
@@ -265,6 +304,10 @@ public class obligatorias extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jButton1))))
                 .addContainerGap(44, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(57, 57, 57))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,7 +318,9 @@ public class obligatorias extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(28, 28, 28)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(72, 72, 72))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(29, 29, 29))
         );
 
         pack();
@@ -295,6 +340,27 @@ public class obligatorias extends javax.swing.JFrame {
         main.setVisible(true);
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        JFileChooser escoger = new JFileChooser();
+        
+        escoger.setApproveButtonText("Guardar");
+        
+        escoger.showOpenDialog(null);
+        
+        File f = escoger.getSelectedFile();
+        
+        String nombreAchivo = f.getAbsolutePath();
+        
+        try {
+            generarReporte(nombreAchivo);
+        } catch (Exception ex) {
+            Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,6 +399,7 @@ public class obligatorias extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
