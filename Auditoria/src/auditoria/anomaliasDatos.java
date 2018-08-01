@@ -8,6 +8,8 @@ package auditoria;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,8 +65,8 @@ public class anomaliasDatos extends javax.swing.JFrame {
     public void generarReporte() throws Exception {
         BufferedWriter bfw = new BufferedWriter(new FileWriter("Data.txt"));
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
-            if(i == 2){
-            bfw.write("\t\t\t\t\t\t\t\t\t\t\t\t");
+            if (i == 2) {
+                bfw.write("\t\t\t\t\t\t\t\t\t\t\t\t");
             }
             bfw.write(jTable1.getColumnName(i));
             bfw.write("\t");
@@ -73,19 +75,18 @@ public class anomaliasDatos extends javax.swing.JFrame {
         for (int i = 0; i < jTable1.getRowCount(); i++) {
             bfw.newLine();
             for (int j = 0; j < jTable1.getColumnCount(); j++) {
-                
-                if(j == 2){
-            bfw.write("\t\t\t\t\t\t");
-            }
 
-                
+                if (j == 2) {
+                    bfw.write("\t\t\t\t\t\t");
+                }
+
                 bfw.write((jTable1.getValueAt(i, j)).toString());
                 bfw.write("\t");
             }
         }
         bfw.close();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -298,7 +299,7 @@ public class anomaliasDatos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         try {
             generarReporte();
         } catch (Exception ex) {
