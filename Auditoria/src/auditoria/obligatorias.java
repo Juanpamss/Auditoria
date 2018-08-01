@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -75,7 +76,6 @@ public class obligatorias extends javax.swing.JFrame {
                     }
 
                     //System.out.print(res.getString(i));
-
                     if (i == 1) {
 
                         aux += res.getString(i) + ",";
@@ -126,8 +126,11 @@ public class obligatorias extends javax.swing.JFrame {
 
     public void analizar() {
 
-        System.out.println(datosToken.size());
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
+        modelo.setRowCount(0);
+
+        //System.out.println(datosToken.size());
         for (int i = 0; i < datosToken.size() - 1; i++) {
 
             String auxActual[] = datosToken.get(i);
@@ -137,23 +140,42 @@ public class obligatorias extends javax.swing.JFrame {
                 //String auxActual [] = datosToken.get(i);
                 String auxSiguiente[] = datosToken.get(j + 1);
 
-                System.out.println("Primero: " + auxActual[1]);
-                System.out.println("Segundo: " + auxSiguiente[1]);
-
                 if (auxActual[0] != (auxSiguiente[0]) && auxActual[1].equals(auxSiguiente[1])) {
 
-                    System.out.println(i + "Integridad en: " + auxActual[0] + " Con: " + auxSiguiente[0]);
+                    /*System.out.println("Primero: " + auxActual[1]);
+                    System.out.println("Segundo: " + auxSiguiente[1]);*/
+                    //System.out.println("Integridad en: " + auxActual[0] + " Con: " + auxSiguiente[0]);
+
+                    Object rowData[] = new Object[3];
+
+                    rowData[0] = auxActual[0];
+                    rowData[1] = auxSiguiente[0];
+                    rowData[2] = auxActual[1];
+
+                    modelo.addRow(rowData);
 
                 } else {
 
-                    System.out.println(i + "No hay");
-
+                    //System.out.println(i + "No hay");
                 }
 
             }
 
         }
 
+        jTable1.setModel(modelo);
+
+        //cargarTabla();
+    }
+
+    public void cargarTabla() {
+
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+
+        modelo.setRowCount(0);
+
+
+        jTable1.setModel(modelo);
     }
 
     /**
@@ -166,24 +188,66 @@ public class obligatorias extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Analizar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jMenu1.setText("Acciones");
-        jMenuBar1.add(jMenu1);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Tabla 1", "Tabla 2", "Campo"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel1.setText("Debería existir una relación de integridad entre:");
+
+        jMenu1.setText("Acciones");
+
+        jMenuItem1.setText("Inicio");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -192,16 +256,26 @@ public class obligatorias extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jButton1)
-                .addContainerGap(744, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jButton1))))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(29, 29, 29)
                 .addComponent(jButton1)
-                .addContainerGap(367, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(28, 28, 28)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72))
         );
 
         pack();
@@ -213,6 +287,14 @@ public class obligatorias extends javax.swing.JFrame {
         this.obligatorias();
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        
+        this.dispose();
+        main main = new main();
+        main.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,8 +333,12 @@ public class obligatorias extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
