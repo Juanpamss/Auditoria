@@ -9,7 +9,6 @@ import static auditoria.anomaliasDatos.res;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -206,22 +205,7 @@ public class integridadDatos extends javax.swing.JFrame {
                 //datos.put(res.getString(1), res.getString(2));
             }
 
-            /*int i = 0;
             
-            for (String[] dato : datosToken){
-            
-                for(String dat : dato){
-                
-                    System.out.println(i + dat);
-                    
-                    
-                    
-                }
-                
-                i++;
-                
-            }*/
-            //System.out.println(this.datosToken.length);
         } catch (Exception e) {
         }
 
