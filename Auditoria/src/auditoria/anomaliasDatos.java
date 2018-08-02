@@ -271,13 +271,13 @@ public class anomaliasDatos extends javax.swing.JFrame {
                 + "   RefDbId, RefPruId, RefFile, RefPage, RefSlot,Allocation)\n"
                 + "   EXEC ('dbcc checkdb(''' + @database_name + ''') with tableresults')";
 
-        String queryEjecutarProc = "EXEC usp_CheckDBIntegrity 'pubs' -- specifies particular database, otherwise ALL DBS\n";
+        String queryEjecutarProc = "EXEC usp_CheckDBIntegrity 'Orders' -- specifies particular database, otherwise ALL DBS\n";
 
         String queryConsultarResultados = "/****** Script for SelectTopNRows command from SSMS  ******/\n"
                 + "SELECT TOP (1000) [Error]\n"
                 + "      ,[MessageText]\n"
                 + "      ,[TimeStamp]\n"
-                + "  FROM [pubs].[dbo].[dbcc_history]";
+                + "  FROM [Orders].[dbo].[dbcc_history]";
 
         res = coneccionBDD.baseDatos.consulta(queryCrearTabla);
         res = coneccionBDD.baseDatos.consulta(queryDropExists);

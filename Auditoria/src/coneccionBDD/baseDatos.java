@@ -20,7 +20,7 @@ public class baseDatos {
     public static Connection getConnection () {
 
         Connection connection = null;
-        String dbName = "pubs";
+        String dbName = "Orders";
         String user = "sa";
         String pass = "gibson";
         
