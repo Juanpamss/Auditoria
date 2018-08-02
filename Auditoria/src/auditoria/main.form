@@ -104,7 +104,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Inserci&#xf3;n, Eliminaci&#xf3;n y Actualizaci&#xf3;n"/>
+        <Property name="text" type="java.lang.String" value="Integridad faltante"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
@@ -112,7 +112,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Anomal&#xed;as de datos"/>
+        <Property name="text" type="java.lang.String" value="Anomal&#xed;as Generales"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>

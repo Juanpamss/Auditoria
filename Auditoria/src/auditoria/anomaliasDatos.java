@@ -276,6 +276,11 @@ public class anomaliasDatos extends javax.swing.JFrame {
                 + "      ,[MessageText]\n"
                 + "      ,[TimeStamp]\n"
                 + "  FROM [Orders].[dbo].[dbcc_history]";
+        
+        String queryEliminarTabla = "DROP TABLE [dbo].[dbcc_history]";
+        
+        
+        
 
         res = coneccionBDD.baseDatos.consulta(queryCrearTabla);
         res = coneccionBDD.baseDatos.consulta(queryDropExists);
@@ -283,6 +288,8 @@ public class anomaliasDatos extends javax.swing.JFrame {
         res = coneccionBDD.baseDatos.consulta(queryEjecutarProc);
 
         cargarTabla(queryConsultarResultados);
+        
+        res = coneccionBDD.baseDatos.consulta(queryEliminarTabla);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

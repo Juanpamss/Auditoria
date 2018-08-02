@@ -12,13 +12,9 @@ import java.io.FileWriter;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-<<<<<<< HEAD
-=======
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
->>>>>>> f8c9d145684150ca02a2aa68f0b4e62100dc52c4
 import javax.swing.table.DefaultTableModel;
 
 /**

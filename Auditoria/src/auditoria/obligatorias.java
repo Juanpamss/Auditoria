@@ -32,6 +32,12 @@ public class obligatorias extends javax.swing.JFrame {
     ArrayList<String[]> datosToken;
 
     Map<String, String> datosMapa = new HashMap<>();
+    
+    public static ArrayList<String []> datosComparar;
+
+    public static ArrayList<String[]> getDatosComparar() {
+        return datosComparar;
+    }
 
     public obligatorias() {
         initComponents();
@@ -66,6 +72,8 @@ public class obligatorias extends javax.swing.JFrame {
         try {
 
             datosToken = new ArrayList<>();
+            
+            datosComparar = new ArrayList<>();
 
             while (res.next()) {
 
@@ -97,7 +105,6 @@ public class obligatorias extends javax.swing.JFrame {
                 //System.out.println(aux);
                 tokenizar(aux);
 
-                Vector v = new Vector();
                 //datos.put(res.getString(1), res.getString(2));
             }
 
@@ -151,17 +158,39 @@ public class obligatorias extends javax.swing.JFrame {
                     System.out.println("Segundo: " + auxSiguiente[1]);*/
                     //System.out.println("Integridad en: " + auxActual[0] + " Con: " + auxSiguiente[0]);
 
-                    Object rowData[] = new Object[3];
+                    Object rowData[] = new Object[4];
 
                     rowData[0] = auxActual[0];
                     rowData[1] = auxSiguiente[0];
                     rowData[2] = auxActual[1];
+                    rowData[3] = "FOREIGN_KEY_CONSTRAINT";
+                    
+                    String [] auxComparar = new String[3];
+                    
+                    auxComparar[0] = auxActual[0];
+                    auxComparar[1] = auxSiguiente[0];
+                    auxComparar[2] = rowData[3].toString();
+                    
+                    datosComparar.add(auxComparar);
 
                     modelo.addRow(rowData);
 
-                } else {
+                } else if(auxActual[0] == (auxSiguiente[0]) && auxActual[1].equals(auxSiguiente[1])){
 
-                    //System.out.println(i + "No hay");
+                    Object rowData[] = new Object[4];
+
+                    rowData[0] = auxActual[0];
+                    rowData[1] = auxSiguiente[0];
+                    rowData[2] = auxActual[1];
+                    rowData[3] = "PRIMARY_KEY_CONSTRAINT";
+                    
+                    String [] auxComparar = new String[3];
+                    
+                    auxComparar[0] = auxActual[0];
+                    auxComparar[1] = auxSiguiente[0];
+                    auxComparar[2] = rowData[3].toString();
+
+                    modelo.addRow(rowData);
                 }
 
             }
@@ -238,15 +267,23 @@ public class obligatorias extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Tabla 1", "Tabla 2", "Campo"
+                "Tabla 1", "Tabla 2", "Campo", "Tipo de relación"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

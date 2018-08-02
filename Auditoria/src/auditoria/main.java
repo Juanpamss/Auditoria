@@ -17,20 +17,19 @@ public class main extends javax.swing.JFrame {
     /**
      * Creates new form main
      */
-    
     public main() {
         initComponents();
-        
+
     }
-    
-    public static void ingresarInfoAnalizar(){
-    
+
+    public static void ingresarInfoAnalizar() {
+
         baseDatos base = new baseDatos();
-        
+
         base.setDbName(JOptionPane.showInputDialog("Ingrese el nombre de la base: "));
         base.setUser(JOptionPane.showInputDialog("Ingrese el nombre del usuario: "));
         base.setPass(JOptionPane.showInputDialog("Ingrese el password: "));
-        
+
     }
 
     /**
@@ -64,14 +63,14 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Inserción, Eliminación y Actualización");
+        jButton2.setText("Integridad faltante");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Anomalías de datos");
+        jButton3.setText("Anomalías Generales");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -149,64 +148,73 @@ public class main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+
         this.dispose();
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
+
         anomaliasDatos anomalias = new anomaliasDatos();
-        
+
         this.setVisible(false);
         anomalias.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+
         obligatorias obligatoria = new obligatorias();
-        
+
         this.setVisible(false);
-        
+
         obligatoria.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       
+
         integridadExistente integridad = new integridadExistente();
-        
+
         this.setVisible(false);
-        
+
         integridad.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-       
+
         integridadDatos integridad = new integridadDatos();
-        
+
         this.setVisible(false);
-        
+
         integridad.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        operaciones operaciones = new operaciones();
-        
-        this.setVisible(false);
-        
-        operaciones.setVisible(true);
-        
+
+        if (obligatorias.datosComparar == null) {
+
+            JOptionPane.showMessageDialog(null, "Primero se debe analizar la integridad obligatoria");
+
+        } else {
+
+            faltante faltante = new faltante();
+
+            this.setVisible(false);
+
+            faltante.setVisible(true);
+
+        }
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
+
         ingresarInfoAnalizar();
-        
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
@@ -237,11 +245,10 @@ public class main extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new main().setVisible(true);
-                
+
             }
         });
     }
