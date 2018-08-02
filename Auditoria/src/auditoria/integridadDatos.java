@@ -6,9 +6,19 @@
 package auditoria;
 
 import static auditoria.anomaliasDatos.res;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+<<<<<<< HEAD
+=======
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+>>>>>>> f8c9d145684150ca02a2aa68f0b4e62100dc52c4
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,17 +59,17 @@ public class integridadDatos extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Tabla", "Campo"
+                "Tabla", "Campo", "Tipo de dato"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -92,7 +102,12 @@ public class integridadDatos extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Generar Reporte");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Se encontraron las siguientes anomalías, se sugiere revisar manualmente lo siguiente:");
 
@@ -114,10 +129,6 @@ public class integridadDatos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(77, 77, 77))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -129,6 +140,10 @@ public class integridadDatos extends javax.swing.JFrame {
                             .addComponent(jButton1)
                             .addComponent(jLabel1))))
                 .addContainerGap(49, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(76, 76, 76))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,9 +154,9 @@ public class integridadDatos extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addGap(8, 8, 8))
+                .addGap(19, 19, 19))
         );
 
         pack();
@@ -221,6 +236,26 @@ public class integridadDatos extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+                
+        JFileChooser escoger = new JFileChooser();
+        
+        escoger.setApproveButtonText("Guardar");
+        
+        escoger.showOpenDialog(null);
+        
+        File f = escoger.getSelectedFile();
+        
+        String nombreAchivo = f.getAbsolutePath();
+        
+        try {
+            generarReporte(nombreAchivo);
+        } catch (Exception ex) {
+            Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -292,7 +327,7 @@ public class integridadDatos extends javax.swing.JFrame {
 
                 String query = "SELECT ISNUMERIC(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
-                System.out.println("query: " + query);
+                //System.out.println("query: " + query);
 
                 res = coneccionBDD.baseDatos.consulta(query);
 
@@ -306,24 +341,27 @@ public class integridadDatos extends javax.swing.JFrame {
 
                     }
 
-                    System.out.println(validacion.size());
+                    //System.out.println(validacion.size());
 
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 0) {
 
-                            System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
+                            //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
 
-                            Object rowData[] = new Object[2];
+                            Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
                             rowData[1] = auxActual[1];
+                            rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
+                            
+                            break;
 
                         } else {
 
-                            System.out.println("No hay");
+                            //System.out.println("No hay");
                         }
 
                     }
@@ -335,7 +373,7 @@ public class integridadDatos extends javax.swing.JFrame {
 
                 String query = "SELECT ISNUMERIC(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
-                System.out.println("query: " + query);
+                //System.out.println("query: " + query);
 
                 res = coneccionBDD.baseDatos.consulta(query);
 
@@ -349,24 +387,27 @@ public class integridadDatos extends javax.swing.JFrame {
 
                     }
 
-                    System.out.println(validacion.size());
+                    //System.out.println(validacion.size());
 
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 1) {
 
-                            System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
+                            //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
                             
-                            Object rowData[] = new Object[2];
+                            Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
                             rowData[1] = auxActual[1];
+                            rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
+                            
+                            break;
 
                         } else {
 
-                            System.out.println("No hay");
+                            //System.out.println("No hay");
                         }
 
                     }
@@ -378,7 +419,7 @@ public class integridadDatos extends javax.swing.JFrame {
 
                 String query = "SELECT ISDATE(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
-                System.out.println("query: " + query);
+                //System.out.println("query: " + query);
 
                 res = coneccionBDD.baseDatos.consulta(query);
 
@@ -392,24 +433,27 @@ public class integridadDatos extends javax.swing.JFrame {
 
                     }
 
-                    System.out.println(validacion.size());
+                    //System.out.println(validacion.size());
 
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 0) {
 
-                            System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
+                            //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
                             
-                            Object rowData[] = new Object[2];
+                            Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
                             rowData[1] = auxActual[1];
+                            rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
+                            
+                            break;
 
                         } else {
 
-                            System.out.println("No hay");
+                            //System.out.println("No hay");
                         }
 
                     }
@@ -421,7 +465,7 @@ public class integridadDatos extends javax.swing.JFrame {
 
                 String query = "SELECT ISNUMERIC(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
-                System.out.println("query: " + query);
+                //System.out.println("query: " + query);
 
                 res = coneccionBDD.baseDatos.consulta(query);
 
@@ -435,24 +479,27 @@ public class integridadDatos extends javax.swing.JFrame {
 
                     }
 
-                    System.out.println(validacion.size());
+                    //System.out.println(validacion.size());
 
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 0) {
 
-                            System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
+                            //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
                             
-                            Object rowData[] = new Object[2];
+                            Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
                             rowData[1] = auxActual[1];
+                            rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
+                            
+                            break;
 
                         } else {
 
-                            System.out.println("No hay");
+                            //System.out.println("No hay");
                         }
 
                     }
@@ -466,6 +513,32 @@ public class integridadDatos extends javax.swing.JFrame {
 
         jTable1.setModel(modelo);
         
+    }
+    
+    
+    public void generarReporte(String destino) throws Exception {
+        BufferedWriter bfw = new BufferedWriter(new FileWriter(destino + ".txt"));
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            if (i == 2) {
+                bfw.write("\t\t\t\t\t\t\t\t\t\t\t\t");
+            }
+            bfw.write(jTable1.getColumnName(i));
+            bfw.write("\t");
+        }
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            bfw.newLine();
+            for (int j = 0; j < jTable1.getColumnCount(); j++) {
+
+                if (j == 2) {
+                    bfw.write("\t\t\t\t\t\t");
+                }
+
+                bfw.write((jTable1.getValueAt(i, j)).toString());
+                bfw.write("\t");
+            }
+        }
+        bfw.close();
     }
 
 
