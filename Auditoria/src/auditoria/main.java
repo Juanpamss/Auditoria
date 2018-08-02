@@ -18,12 +18,8 @@ public class main extends javax.swing.JFrame {
      * Creates new form main
      */
     
-    String nombreBase;
-    
     public main() {
         initComponents();
-        
-        nombreBase = "";
         
     }
     
