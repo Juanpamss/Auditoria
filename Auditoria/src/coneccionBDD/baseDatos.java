@@ -16,13 +16,28 @@ import java.sql.Statement;
  * @author Juan Pa
  */
 public class baseDatos {
+
+    static String dbName = "";
+    static String user = "";
+    static String pass = "";
+    
+    public static void setDbName(String dbName) {
+        baseDatos.dbName = dbName;
+    }
+
+    public static void setUser(String user) {
+        baseDatos.user = user;
+    }
+
+    public static void setPass(String pass) {
+        baseDatos.pass = pass;
+    }
+    
     
     public static Connection getConnection () {
 
         Connection connection = null;
-        String dbName = "Orders";
-        String user = "sa";
-        String pass = "gibson";
+        
         
         try {
             
