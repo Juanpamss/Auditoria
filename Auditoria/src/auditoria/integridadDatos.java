@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -47,6 +48,10 @@ public class integridadDatos extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -87,8 +92,8 @@ public class integridadDatos extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(99, 99, 99))
         );
 
         jButton1.setText("Analizar");
@@ -106,6 +111,46 @@ public class integridadDatos extends javax.swing.JFrame {
         });
 
         jLabel1.setText("Se encontraron las siguientes anomalías, se sugiere revisar manualmente lo siguiente:");
+
+        jLabel2.setText("Hay hijos sin padre en:");
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Tabla 1", "Tabla 2"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         jMenu1.setText("Accion");
 
@@ -128,31 +173,40 @@ public class integridadDatos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jLabel1))))
-                .addContainerGap(49, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(jButton1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(30, 30, 30))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addGap(76, 76, 76))
+                .addGap(64, 64, 64))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addGap(19, 19, 19))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -216,40 +270,41 @@ public class integridadDatos extends javax.swing.JFrame {
                 //datos.put(res.getString(1), res.getString(2));
             }
 
-            
         } catch (Exception e) {
         }
 
         analizar();
+        
+        verificarDatos();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+
         this.dispose();
         main main = new main();
         main.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                
+
         JFileChooser escoger = new JFileChooser();
-        
+
         escoger.setApproveButtonText("Guardar");
-        
+
         escoger.showOpenDialog(null);
-        
+
         File f = escoger.getSelectedFile();
-        
+
         String nombreAchivo = f.getAbsolutePath();
-        
+
         try {
             generarReporte(nombreAchivo);
         } catch (Exception ex) {
             Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -308,7 +363,7 @@ public class integridadDatos extends javax.swing.JFrame {
     }
 
     public void analizar() {
-        
+
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
         modelo.setRowCount(0);
@@ -324,7 +379,6 @@ public class integridadDatos extends javax.swing.JFrame {
                 String query = "SELECT ISNUMERIC(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
                 //System.out.println("query: " + query);
-
                 res = coneccionBDD.baseDatos.consulta(query);
 
                 try {
@@ -338,13 +392,11 @@ public class integridadDatos extends javax.swing.JFrame {
                     }
 
                     //System.out.println(validacion.size());
-
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 0) {
 
                             //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
-
                             Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
@@ -352,7 +404,7 @@ public class integridadDatos extends javax.swing.JFrame {
                             rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
-                            
+
                             break;
 
                         } else {
@@ -370,7 +422,6 @@ public class integridadDatos extends javax.swing.JFrame {
                 String query = "SELECT ISNUMERIC(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
                 //System.out.println("query: " + query);
-
                 res = coneccionBDD.baseDatos.consulta(query);
 
                 try {
@@ -384,13 +435,11 @@ public class integridadDatos extends javax.swing.JFrame {
                     }
 
                     //System.out.println(validacion.size());
-
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 1) {
 
                             //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
-                            
                             Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
@@ -398,7 +447,7 @@ public class integridadDatos extends javax.swing.JFrame {
                             rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
-                            
+
                             break;
 
                         } else {
@@ -416,7 +465,6 @@ public class integridadDatos extends javax.swing.JFrame {
                 String query = "SELECT ISDATE(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
                 //System.out.println("query: " + query);
-
                 res = coneccionBDD.baseDatos.consulta(query);
 
                 try {
@@ -430,13 +478,11 @@ public class integridadDatos extends javax.swing.JFrame {
                     }
 
                     //System.out.println(validacion.size());
-
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 0) {
 
                             //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
-                            
                             Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
@@ -444,7 +490,7 @@ public class integridadDatos extends javax.swing.JFrame {
                             rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
-                            
+
                             break;
 
                         } else {
@@ -462,7 +508,6 @@ public class integridadDatos extends javax.swing.JFrame {
                 String query = "SELECT ISNUMERIC(" + auxActual[0] + "." + auxActual[1] + ") from " + auxActual[0];
 
                 //System.out.println("query: " + query);
-
                 res = coneccionBDD.baseDatos.consulta(query);
 
                 try {
@@ -476,13 +521,11 @@ public class integridadDatos extends javax.swing.JFrame {
                     }
 
                     //System.out.println(validacion.size());
-
                     for (int k = 0; k < validacion.size(); k++) {
 
                         if (validacion.get(k) == 0) {
 
                             //System.out.println("Anomalias en tabla: " + auxActual[0] + ", campo: " + auxActual[1]);
-                            
                             Object rowData[] = new Object[3];
 
                             rowData[0] = auxActual[0];
@@ -490,7 +533,7 @@ public class integridadDatos extends javax.swing.JFrame {
                             rowData[2] = auxActual[2];
 
                             modelo.addRow(rowData);
-                            
+
                             break;
 
                         } else {
@@ -508,10 +551,9 @@ public class integridadDatos extends javax.swing.JFrame {
         }
 
         jTable1.setModel(modelo);
-        
+
     }
-    
-    
+
     public void generarReporte(String destino) throws Exception {
         BufferedWriter bfw = new BufferedWriter(new FileWriter(destino + ".txt"));
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
@@ -537,16 +579,132 @@ public class integridadDatos extends javax.swing.JFrame {
         bfw.close();
     }
 
+    public void verificarDatos() {
+
+        DefaultTableModel modelo2 = (DefaultTableModel) jTable2.getModel();
+
+        modelo2.setRowCount(0);
+
+        Object datos = new Object();
+        Object datos2 = new Object();
+
+        for (int i = 0; i < obligatorias.datosCompararIntegridad.size(); i++) {
+
+            String auxDatos[] = obligatorias.datosCompararIntegridad.get(i);
+
+            if (auxDatos[0].equals("Order Details")) {
+
+                auxDatos[0] = "[Order Details]";
+
+            } else if (auxDatos[1].equals("Order Details")) {
+
+                auxDatos[1] = "[Order Details]";
+
+            }
+
+            String query = "select COUNT(*) from " + auxDatos[1];
+
+            String query2 = "select distinct COUNT(au." + auxDatos[2] + ") from " + auxDatos[0] + " au join " + auxDatos[1] + " ta on (au." + auxDatos[2] + " = ta." + auxDatos[2] + ")";
+
+            //System.out.println("papa: " + auxDatos[0] + " hijo: " + auxDatos[1]);
+            res = coneccionBDD.baseDatos.consulta(query);
+
+            try {
+
+                while (res.next()) {
+
+                    datos = res.getInt(1);
+
+                }
+
+            } catch (Exception e) {
+            }
+
+            res = coneccionBDD.baseDatos.consulta(query2);
+
+            try {
+
+                while (res.next()) {
+
+                    datos2 = res.getInt(1);
+
+                }
+
+            } catch (Exception e) {
+            }
+
+            //System.out.println(datos + " seg " + datos2);
+            if (datos == datos2) {
+
+                //System.out.println("Iguales");
+            } else {
+
+                String query3 = "select COUNT(*) from " + auxDatos[0];
+
+                String query4 = "select distinct COUNT(au." + auxDatos[2] + ") from " + auxDatos[1] + " au join " + auxDatos[0] + " ta on (au." + auxDatos[2] + " = ta." + auxDatos[2] + ")";
+
+                //System.out.println("papa: " + auxDatos[0] + " hijo: " + auxDatos[1]);
+                res = coneccionBDD.baseDatos.consulta(query3);
+
+                try {
+
+                    while (res.next()) {
+
+                        datos = res.getInt(1);
+
+                    }
+
+                } catch (Exception e) {
+                }
+
+                res = coneccionBDD.baseDatos.consulta(query4);
+
+                try {
+
+                    while (res.next()) {
+
+                        datos2 = res.getInt(1);
+
+                    }
+
+                } catch (Exception e) {
+                }
+
+                //System.out.println(datos + " seg" + datos2);
+                if (datos == datos2) {
+
+                    //System.out.println("Iguales");
+                } else {
+
+                    Object rowData[] = new Object[2];
+
+                    rowData[0] = auxDatos[0];
+                    rowData[1] = auxDatos[1];
+                    
+                    modelo2.addRow(rowData);
+
+                }
+
+            }
+
+        }
+
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }

@@ -184,11 +184,19 @@ public class main extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
-        integridadDatos integridad = new integridadDatos();
+        if (obligatorias.datosComparar == null) {
 
-        this.setVisible(false);
+            JOptionPane.showMessageDialog(null, "Primero se debe analizar la integridad obligatoria");
 
-        integridad.setVisible(true);
+        } else {
+
+            integridadDatos integridad = new integridadDatos();
+
+            this.setVisible(false);
+
+            integridad.setVisible(true);
+
+        }
 
     }//GEN-LAST:event_jButton5ActionPerformed
 

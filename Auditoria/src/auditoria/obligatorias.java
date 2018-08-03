@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -32,8 +31,9 @@ public class obligatorias extends javax.swing.JFrame {
     ArrayList<String[]> datosToken;
 
     Map<String, String> datosMapa = new HashMap<>();
-    
-    public static ArrayList<String []> datosComparar;
+
+    public static ArrayList<String[]> datosComparar;
+    public static ArrayList<String[]> datosCompararIntegridad;
 
     public static ArrayList<String[]> getDatosComparar() {
         return datosComparar;
@@ -72,8 +72,10 @@ public class obligatorias extends javax.swing.JFrame {
         try {
 
             datosToken = new ArrayList<>();
-            
+
             datosComparar = new ArrayList<>();
+            
+            datosCompararIntegridad = new ArrayList<>();
 
             while (res.next()) {
 
@@ -157,25 +159,32 @@ public class obligatorias extends javax.swing.JFrame {
                     /*System.out.println("Primero: " + auxActual[1]);
                     System.out.println("Segundo: " + auxSiguiente[1]);*/
                     //System.out.println("Integridad en: " + auxActual[0] + " Con: " + auxSiguiente[0]);
-
                     Object rowData[] = new Object[4];
 
                     rowData[0] = auxActual[0];
                     rowData[1] = auxSiguiente[0];
                     rowData[2] = auxActual[1];
                     rowData[3] = "FOREIGN_KEY_CONSTRAINT";
-                    
-                    String [] auxComparar = new String[3];
-                    
+
+                    String[] auxComparar = new String[3];
+
                     auxComparar[0] = auxActual[0];
                     auxComparar[1] = auxSiguiente[0];
                     auxComparar[2] = rowData[3].toString();
+
+                    String[] auxIntegridadDatos = new String[3];
+
+                    auxIntegridadDatos[0] = auxActual[0];
+                    auxIntegridadDatos[1] = auxSiguiente[0];
+                    auxIntegridadDatos[2] = auxActual[1];
+                    
+                    datosCompararIntegridad.add(auxIntegridadDatos);
                     
                     datosComparar.add(auxComparar);
 
                     modelo.addRow(rowData);
 
-                } else if(auxActual[0] == (auxSiguiente[0]) && auxActual[1].equals(auxSiguiente[1])){
+                } else if (auxActual[0] == (auxSiguiente[0]) && auxActual[1].equals(auxSiguiente[1])) {
 
                     Object rowData[] = new Object[4];
 
@@ -183,13 +192,13 @@ public class obligatorias extends javax.swing.JFrame {
                     rowData[1] = auxSiguiente[0];
                     rowData[2] = auxActual[1];
                     rowData[3] = "PRIMARY_KEY_CONSTRAINT";
-                    
-                    String [] auxComparar = new String[3];
-                    
+
+                    String[] auxComparar = new String[3];
+
                     auxComparar[0] = auxActual[0];
                     auxComparar[1] = auxSiguiente[0];
                     auxComparar[2] = rowData[3].toString();
-                    
+
                     datosComparar.add(auxComparar);
 
                     modelo.addRow(rowData);
@@ -203,17 +212,16 @@ public class obligatorias extends javax.swing.JFrame {
 
         //cargarTabla();
     }
-
+   
     public void cargarTabla() {
 
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
         modelo.setRowCount(0);
 
-
         jTable1.setModel(modelo);
     }
-    
+
     public void generarReporte(String destino) throws Exception {
         BufferedWriter bfw = new BufferedWriter(new FileWriter(destino + ".txt"));
         for (int i = 0; i < jTable1.getColumnCount(); i++) {
@@ -372,32 +380,32 @@ public class obligatorias extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+
         this.dispose();
         main main = new main();
         main.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         JFileChooser escoger = new JFileChooser();
-        
+
         escoger.setApproveButtonText("Guardar");
-        
+
         escoger.showOpenDialog(null);
-        
+
         File f = escoger.getSelectedFile();
-        
+
         String nombreAchivo = f.getAbsolutePath();
-        
+
         try {
             generarReporte(nombreAchivo);
         } catch (Exception ex) {
             Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -324,6 +325,12 @@ public class faltante extends javax.swing.JFrame {
         }
 
         jTable1.setModel(modelo);
+        
+        if (jTable1.getRowCount() == 0){
+        
+            JOptionPane.showMessageDialog(null, "No hay integridad faltante");
+            
+        }
 
     }
 
