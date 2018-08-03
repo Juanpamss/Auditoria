@@ -189,6 +189,8 @@ public class obligatorias extends javax.swing.JFrame {
                     auxComparar[0] = auxActual[0];
                     auxComparar[1] = auxSiguiente[0];
                     auxComparar[2] = rowData[3].toString();
+                    
+                    datosComparar.add(auxComparar);
 
                     modelo.addRow(rowData);
                 }

@@ -6,9 +6,15 @@
 package auditoria;
 
 import static auditoria.anomaliasDatos.res;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,7 +27,6 @@ public class faltante extends javax.swing.JFrame {
      * Creates new form faltante
      */
     ArrayList<String[]> datosToken;
-    ArrayList<String[]> datosForaneas;
 
     public faltante() {
         initComponents();
@@ -97,6 +102,11 @@ public class faltante extends javax.swing.JFrame {
         jLabel1.setText("Faltan las siguientes relaciones de integridad:");
 
         jButton2.setText("Generar Reporte");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Acciones");
 
@@ -168,7 +178,7 @@ public class faltante extends javax.swing.JFrame {
                 + "type_desc not like 'CHECK%' and\n"
                 + "type_desc not like 'DEFAULT%'";
 
-        String queryForaneas = "SELECT  \n"
+        /*String queryForaneas = "SELECT  \n"
                 + "    tab1.name AS [table],\n"
                 + "	REPLACE(obj.name,obj.name, 'FOREIGN_KEY_CONSTRAINT')\n"
                 + "FROM sys.foreign_key_columns fkc\n"
@@ -183,8 +193,7 @@ public class faltante extends javax.swing.JFrame {
                 + "INNER JOIN sys.tables tab2\n"
                 + "    ON tab2.object_id = fkc.referenced_object_id\n"
                 + "INNER JOIN sys.columns col2\n"
-                + "    ON col2.column_id = referenced_column_id AND col2.object_id = tab2.object_id";
-
+                + "    ON col2.column_id = referenced_column_id AND col2.object_id = tab2.object_id";*/
         res = coneccionBDD.baseDatos.consulta(queryActuales);
 
         try {
@@ -227,54 +236,14 @@ public class faltante extends javax.swing.JFrame {
         } catch (Exception e) {
         }
 
-        res = coneccionBDD.baseDatos.consulta(queryForaneas);
+        imprimir();
 
-        try {
-
-            datosForaneas = new ArrayList<>();
-
-            while (res.next()) {
-
-                ResultSetMetaData rsmd = res.getMetaData();
-                int columnsNumber = rsmd.getColumnCount();
-
-                String aux = "";
-
-                for (int i = 1; i <= columnsNumber; i++) {
-
-                    if (i > 1) {
-                        //System.out.print(",");
-                    }
-
-                    if (i == 1) {
-
-                        aux += res.getString(i) + ",";
-
-                    } else if (i == 2) {
-
-                        aux += res.getString(i);
-
-                    }
-
-                    //tokenizar(res.getString(i));
-                }
-
-                //System.out.println(aux);
-                tokenizarForaneas(aux);
-
-                //datos.put(res.getString(1), res.getString(2));
-            }
-
-        } catch (Exception e) {
-        }
-
-        //imprimir();
-        analizar();
+        //analizar();
     }
 
     public void imprimir() {
 
-        System.out.println("\nDEBERIAN: \n");
+        /*System.out.println("\nDEBERIAN: \n");
 
         int i = 0;
         for (String[] dato : obligatorias.datosComparar) {
@@ -284,11 +253,10 @@ public class faltante extends javax.swing.JFrame {
             }
             i++;
 
-        }
-
-        System.out.println("\nACTUALES: \n");
-
-        int j = 0;
+        }*/
+        //System.out.println("\nACTUALES: \n");
+        //System.out.println(this.datosToken.size());
+        /*int j = 0;
         for (String[] dato : datosToken) {
             System.out.println(j);
             for (String dat : dato) {
@@ -296,101 +264,86 @@ public class faltante extends javax.swing.JFrame {
             }
             j++;
 
-        }
-
-        System.out.println("\nFORANEAS: \n");
-
-        int k = 0;
-        for (String[] dato : datosForaneas) {
-            System.out.println(k);
-            for (String dat : dato) {
-                System.out.println(dat);
-            }
-            k++;
-
-        }
+        }*/
+        analizar();
 
     }
 
     public void analizar() {
-        
+
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
         modelo.setRowCount(0);
 
+        System.out.println(datosToken.size());
+
+        boolean hay = false;
+
         for (int i = 0; i < obligatorias.datosComparar.size(); i++) {
 
-            String[] auxActualComparar = obligatorias.datosComparar.get(i);
+            String auxActualComparar[] = obligatorias.datosComparar.get(i);
 
-            //&& auxActualComparar[2] != auxActualTokens[1]
             for (int j = 0; j < datosToken.size(); j++) {
 
-                String[] auxActualTokens = datosToken.get(j);
+                String auxActualTokens[] = datosToken.get(j);
 
-                if (auxActualComparar[0].equals(auxActualTokens[0])) {
+                /*System.out.println("\nCOMPARAR: \n");
+                System.out.println(auxActualComparar[0]);
+                System.out.println(auxActualComparar[1]);
+                System.out.println(auxActualComparar[2]);
 
-                    if (auxActualComparar[2] != auxActualTokens[1]) {
+                System.out.println("\nACTUAL: \n");
+                System.out.println(auxActualTokens[0]);
+                System.out.println(auxActualTokens[1]);*/
+                if (auxActualComparar[0].equals(auxActualTokens[0]) && auxActualComparar[2].equals(auxActualTokens[1]) || auxActualComparar[1].equals(auxActualTokens[0]) && auxActualComparar[2].equals(auxActualTokens[1])) {
 
-                        for (int k = 0; k < datosForaneas.size(); k++) {
+                    hay = true;
 
-                            String[] auxActualForaneas = datosForaneas.get(k);
-
-                            if (auxActualComparar[0].equals(auxActualForaneas[0]) && auxActualComparar[2] != auxActualForaneas[1]) {
-
-                                break;
-                                //System.out.println("No hay: " + auxActualComparar[2] + " en: " + auxActualComparar[0] + " con: " + auxActualComparar[1]);
-                            } else {
-
-                                //System.out.println("Si hay: " + auxActualComparar[2] + " en: " + auxActualComparar[0] + " con: " + auxActualComparar[1]);
-                            }
-
-                        }
-
-                        System.out.println("No hay: " + auxActualComparar[2] + " en: " + auxActualComparar[0] + " con: " + auxActualComparar[1]);
-
-                        Object rowData[] = new Object[3];
-
-                        rowData[0] = auxActualComparar[2];
-                        rowData[1] = auxActualComparar[0];
-                        rowData[2] = auxActualComparar[1];
-
-                        modelo.addRow(rowData);
-
-                    } else {
-
-                    }
+                    break;
 
                 } else {
 
-                    //System.out.println("Si hay: " + auxActualComparar[2]);
                 }
 
             }
 
+            if (!hay) {
+
+                System.out.println("No hay: " + auxActualComparar[2] + " en: " + auxActualComparar[0] + " con: " + auxActualComparar[1]);
+
+                Object rowData[] = new Object[3];
+
+                rowData[0] = auxActualComparar[2];
+                rowData[1] = auxActualComparar[0];
+                rowData[2] = auxActualComparar[1];
+
+                modelo.addRow(rowData);
+
+            }
+
         }
-        
+
         jTable1.setModel(modelo);
 
     }
 
-    public void tokenizarForaneas(String dato) {
+    public void generarReporte(String destino) throws Exception {
+        BufferedWriter bfw = new BufferedWriter(new FileWriter(destino + ".txt"));
 
-        StringTokenizer tokens = new StringTokenizer(dato, ",");
-        int nDatos = tokens.countTokens();
-        int i = 0;
+        System.out.println(jTable1.getColumnCount());
 
-        String auxiliar[] = new String[nDatos];
+        bfw.write("LOG");
+        bfw.newLine();
+        bfw.write("Integridades Referenciales Faltantes");
+        bfw.newLine();
+        
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            bfw.newLine();
 
-        while (tokens.hasMoreTokens()) {
-            String str = tokens.nextToken();
+            bfw.write("No hay: " + jTable1.getValueAt(i, 0).toString() + " en: " + jTable1.getValueAt(i, 1).toString() + " con: " + jTable1.getValueAt(i, 2).toString());
 
-            auxiliar[i] = str;
-            //System.out.println("Arreglo T: " + tokens.nextToken()+tokens.nextToken() );
-            i++;
         }
-
-        datosForaneas.add(auxiliar);
-
+        bfw.close();
     }
 
     public void tokenizar(String dato) {
@@ -414,6 +367,26 @@ public class faltante extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        JFileChooser escoger = new JFileChooser();
+
+        escoger.setApproveButtonText("Guardar");
+
+        escoger.showOpenDialog(null);
+
+        File f = escoger.getSelectedFile();
+
+        String nombreAchivo = f.getAbsolutePath();
+
+        try {
+            generarReporte(nombreAchivo);
+        } catch (Exception ex) {
+            Logger.getLogger(anomaliasDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -428,16 +401,24 @@ public class faltante extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(faltante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(faltante.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(faltante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(faltante.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(faltante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(faltante.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(faltante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(faltante.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
